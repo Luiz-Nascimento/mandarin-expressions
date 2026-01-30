@@ -10,11 +10,18 @@ public class GlobalExceptionHandler : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        var (statusCode, title) = exception switch
+        {
+            ArgumentException => (StatusCodes.Status400BadRequest, "Bad Request"),
+
+            _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
+        };
+        httpContext.Response.StatusCode = statusCode;
         ErrorResponse response =
             new ErrorResponse(
                 httpContext.TraceIdentifier,
-                HttpStatusCode.InternalServerError,
+                title,
+                (HttpStatusCode)statusCode,
                 exception.Message,
                 httpContext.Request.Path);
         await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
