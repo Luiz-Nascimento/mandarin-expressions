@@ -17,35 +17,16 @@ public class ExpressionController : ControllerBase
     }
 
     [HttpGet("random")]
-    public async Task<IActionResult> GetRandom([FromQuery] Level level)
+    public async Task<ActionResult<ExpressionResponseDto>> GetRandom([FromQuery] Level level)
     {
-        try
-        {
-            var result = await _service.GetRandomByLevelAsync(level);
-            return Ok(result);
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound("No expressions found for the given level");
-        }
+        var result = await _service.GetRandomByLevelAsync(level);
+        return Ok(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] ExpressionRequestDto request)
+    public async Task<ActionResult<ExpressionResponseDto>> Create([FromBody] ExpressionRequestDto request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
-        try
-        {
-            var result = await _service.CreateAsync(request);
-            return CreatedAtAction(nameof(GetRandom), new { level = result.Level }, result);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        var result = await _service.CreateAsync(request);
+        return CreatedAtAction(nameof(GetRandom), new { level = result.Level }, result);
     }
 }
