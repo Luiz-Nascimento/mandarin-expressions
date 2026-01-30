@@ -1,0 +1,6 @@
+@MandarinExpressionsAPI_HostAddress = http://localhost:5198
+
+GET {{MandarinExpressionsAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
