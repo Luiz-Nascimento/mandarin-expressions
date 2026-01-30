@@ -1,0 +1,40 @@
+# =========================
+# Rider / IntelliJ
+# =========================
+.idea/
+*.iml
+
+# =========================
+# .NET / Visual Studio
+# =========================
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+# =========================
+	# ASP.NET Core
+# =========================
+appsettings.Development.json
+appsettings.Production.json
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# SQLite
+# =========================
+*.db
+*.db-shm
+*.db-wal
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
