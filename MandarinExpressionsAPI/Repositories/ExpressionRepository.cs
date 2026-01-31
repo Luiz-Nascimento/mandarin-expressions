@@ -13,6 +13,11 @@ public class ExpressionRepository : IExpressionRepository
         _context = context;
     }
 
+    public IQueryable<Expression> GetAll()
+    {
+        return _context.Expressions;
+    }
+
     public async Task<Expression?> GetByIdAsync(Guid id)
     {
         return await _context.Expressions.FindAsync(id);
@@ -27,7 +32,7 @@ public class ExpressionRepository : IExpressionRepository
 
     public async Task AddAsync(Expression expression)
     {
-        _context.AddAsync(expression);
+        await _context.AddAsync(expression);
         await _context.SaveChangesAsync();
     }
 
@@ -41,5 +46,10 @@ public class ExpressionRepository : IExpressionRepository
     {
         _context.Expressions.Remove(expression);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> ExistsByHanziAsync(string hanzi)
+    {
+        return await _context.Expressions.AnyAsync(expression => expression.Hanzi == hanzi);
     }
 }

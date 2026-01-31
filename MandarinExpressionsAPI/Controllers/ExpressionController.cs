@@ -16,6 +16,20 @@ public class ExpressionController : ControllerBase
         _service = service;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<List<ExpressionResponseDto>>> GetAll()
+    {
+        var result = await _service.GetAllAsync();
+        return Ok(result);
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ExpressionResponseDto>> GetByIdAsync(Guid id)
+    {
+        var produto = await _service.GetByIdAsync(id);
+        return Ok(produto);
+    }
+
     [HttpGet("random")]
     public async Task<ActionResult<ExpressionResponseDto>> GetRandom([FromQuery] Level level)
     {
@@ -28,5 +42,12 @@ public class ExpressionController : ControllerBase
     {
         var result = await _service.CreateAsync(request);
         return CreatedAtAction(nameof(GetRandom), new { level = result.Level }, result);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteAsync(Guid id)
+    {
+        await _service.DeleteAsync(id);
+        return NoContent();
     }
 }
